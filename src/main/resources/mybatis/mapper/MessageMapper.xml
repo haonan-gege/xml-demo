@@ -12,9 +12,28 @@
     <insert id="insert" parameterType="com.mybatis.xmldemo.model.Message">
         insert into message(msg_text,msg_summary) value (#{msgText},#{msgSummary})
     </insert>
+    <select id="selectAll" resultType="com.mybatis.xmldemo.model.Message">
+        select * from message
+    </select>
+    <select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
+        select * from message where msg_id=#{msgId}
+    </select>
+    <delete id="delete" parameterType="Integer">
+        delete from message where msg_id=#{msgId}
+    </delete>
+    <update id="update" parameterType="com.mybatis.xmldemo.model.Message">
+        update message set
+        <if test="msgText!=null">msg_text=#{msgText},</if>
+        <if test="msgSummary!=null">msg_summary=#{msgSummary}</if>
+        where msg_id = #{msgId}
+    </update>
+    <insert id="batchInsert" parameterType="com.mybatis.xmldemo.model.Message">
+        insert into message (msg_text,msg_summary) values
+        <foreach collection="list" item="msg" index="index" separator=",">
+            (#{msg.msgText},#{msg.msgSummary})
+        </foreach>
+    </insert>
 
-<!--    <select id="selectAll" resultMap="BaseResulyMap">-->
-<!--        select * from message-->
-<!--    </select>-->
-<!--    <select id="selectById" resultType="com.mybatis.xmldemo.model.Message"></select>-->
+
+
 </mapper>
